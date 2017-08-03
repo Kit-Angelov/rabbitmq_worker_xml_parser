@@ -1,0 +1,9 @@
+{% if user.is_authenticated %}
+<p>Вы вошли как {{ user.username }} [{{ user.first_name }} {{ user.last_name }}]. <a href="{% url 'rabbit_test:logout' %}">Выход</a></p>
+{% else %}<p>Вы не вошли в систему. <a href="{% url 'rabbit_test:login' %}">Войти</a></p>
+{% endif %}
+<form action="{% url 'rabbit_test:index' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit" />
+</form>
