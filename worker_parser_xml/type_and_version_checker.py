@@ -6,7 +6,6 @@ from worker_parser_xml import config
 from worker_parser_xml.base_functions import mk_temp_dir, rm_temp_dir, unzip
 
 
-
 # проверка типа документа
 def check_type_and_version(path_zip):
     """
@@ -49,3 +48,50 @@ def check_type_and_version(path_zip):
 
 if __name__ == '__main__':
     check_type_and_version('parse.zip')
+
+
+from . import config
+
+
+class TypeVersionChecker:
+
+    def __init__(self, etree):
+        self.__etree = etree
+        self.__xml = None
+        self.__type = None
+        self.__version = None
+
+    def get_type(self, xml):
+        self.__xml = xml
+        return self.__type
+
+    def get_version(self, xml, type):
+        self.__xml = xml
+        self.__type = type
+        if self.__type in config.type_list.keys():
+            version_checker_class = config.type_list[self.__type]
+            version_checker = version_checker_class(self.__etree, self.__xml, self.__type)
+            self.__version = version_checker.get_version()
+        return self.__version
+
+
+class BaseVersionChecker:
+
+    def __init__(self, etree, xml, type):
+        self.__etree = etree
+        self.__xml = xml
+        self.__type = type
+        self.version = None
+
+    def get_version(self):
+        pass
+
+
+class VersionCheckerKVZU(BaseVersionChecker):
+
+    def __init__(self, etree, xml, type):
+        super().__init__(etree=etree, xml=xml, type=type)
+
+    def get_version(self):
+
+        return self.version

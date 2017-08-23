@@ -2,13 +2,16 @@
 Конфигурации для парсера
 """
 from worker_parser_xml.XML_HANDLERS.XML_KVZU_7 import xml_kvzu_parser
+from .type_and_version_checker import VersionCheckerKVZU
+from .XML_HANDLERS.xml_handlers import KVZU7
 
 # списко типов
-type_list = ['KPT', 'KVZU']
+type_list = {'KPT': '...',
+             'KVZU': VersionCheckerKVZU}
 
 # словарь тип, версия : функция обработки
 handlers_dict = {
-    'KVZU,7': xml_kvzu_parser,
+    'KVZU': {'7': KVZU7},
 }
 
 # словарь тип документа : тип сущности

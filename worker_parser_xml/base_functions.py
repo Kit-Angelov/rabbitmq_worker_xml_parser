@@ -7,10 +7,11 @@ import shutil
 
 
 # создание "временной" директории
-def mk_temp_dir(path_zip):
-    path_dir = str(path_zip).replace(".zip", "")
+def mk_temp_dir(path_zip, base_path):
+    relative_path_zip = os.path.basename(path_zip)
+    path_dir = os.path.join(base_path, (str(relative_path_zip).replace(".zip", "")))
     try:
-        os.mkdir(str(path_dir))
+        os.mkdir(path_dir)
     except:
         print('Директория уже существует')
     finally:
@@ -18,16 +19,16 @@ def mk_temp_dir(path_zip):
 
 
 # удаление "временной" директории"
-def rm_temp_dir(temp_path):
+def rm_temp_dir(path_dir):
     try:
-        shutil.rmtree(temp_path)
+        shutil.rmtree(path_dir)
     except:
         print('Директории не существует')
 
 
 # распаковка файла зип
-def unzip(path_zip):
-    path_dir = mk_temp_dir(path_zip)
+def unzip(path_zip, base_path):
+    path_dir = mk_temp_dir(path_zip, base_path)
     with zipfile.ZipFile(path_zip, "r") as zip_ref:
         file = zip_ref.namelist()
         zip_ref.extractall(path_dir)

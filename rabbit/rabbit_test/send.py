@@ -6,8 +6,11 @@ def send(body):
             host='localhost'))
     channel = connection.channel()
 
-    channel.queue_declare(queue='test')
+    channel.queue_declare(queue='test', durable=True)
 
     channel.basic_publish(exchange='',
                           routing_key='test',
-                          body=body)
+                          body=body,
+                          properties=pika.BasicProperties(
+                              delivery_mode=2,
+                          ))
