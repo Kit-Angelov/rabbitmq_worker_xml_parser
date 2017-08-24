@@ -1,21 +1,20 @@
 """
 Конфигурации для парсера
 """
-from worker_parser_xml.XML_HANDLERS.XML_KVZU_7 import xml_kvzu_parser
-from .type_and_version_checker import VersionCheckerKVZU
-from .XML_HANDLERS.xml_handlers import KVZU7
+from .XML_HANDLERS.xml_handlers import HandlerKVZU7
+from .type_and_version_checker import CodeCheckerKVZU, CodeChecker
 
 # списко типов
 type_list = {'KPT': '...',
-             'KVZU': VersionCheckerKVZU}
+             'KVZU': CodeCheckerKVZU}
 
 # словарь тип, версия : функция обработки
 handlers_dict = {
-    'KVZU': {'7': KVZU7},
+    'KVZU': {"urn://x-artefacts-rosreestr-ru/outgoing/kvzu/7.0.1": HandlerKVZU7},
 }
 
 # словарь тип документа : тип сущности
-type_feature_dict = {
+type_feature = {
     'КВЗУ': 'ЗУ',
 }
 

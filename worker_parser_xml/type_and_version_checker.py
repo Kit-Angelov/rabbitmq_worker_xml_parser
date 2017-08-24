@@ -1,7 +1,4 @@
 from lxml import etree
-import zipfile
-import os
-import shutil
 from worker_parser_xml import config
 from worker_parser_xml.base_functions import mk_temp_dir, rm_temp_dir, unzip
 
@@ -59,39 +56,38 @@ class TypeVersionChecker:
         self.__etree = etree
         self.__xml = None
         self.__type = None
-        self.__version = None
+        self.__code = None
 
     def get_type(self, xml):
         self.__xml = xml
         return self.__type
 
-    def get_version(self, xml, type):
+    def get_code(self, xml, type_xml):
         self.__xml = xml
-        self.__type = type
+        self.__type = type_xml
         if self.__type in config.type_list.keys():
-            version_checker_class = config.type_list[self.__type]
-            version_checker = version_checker_class(self.__etree, self.__xml, self.__type)
-            self.__version = version_checker.get_version()
-        return self.__version
+            code_checker_class = config.type_list[self.__type]
+            code_checker = code_checker_class(self.__etree, self.__xml, self.__type)
+            self.__code = code_checker.get_code()
+        return self.__code
 
 
-class BaseVersionChecker:
+class CodeChecker:
 
-    def __init__(self, etree, xml, type):
+    def __init__(self, etree, xml, type_xml):
         self.__etree = etree
         self.__xml = xml
-        self.__type = type
-        self.version = None
+        self.__type = type_xml
+        self.code = None
 
-    def get_version(self):
+    def get_code(self):
         pass
 
 
-class VersionCheckerKVZU(BaseVersionChecker):
+class CodeCheckerKVZU(CodeChecker):
 
-    def __init__(self, etree, xml, type):
-        super().__init__(etree=etree, xml=xml, type=type)
+    def __init__(self, etree, xml, type_xml):
+        super().__init__(etree=etree, xml=xml, type_xml=type_xml)
 
-    def get_version(self):
-
-        return self.version
+    def get_code(self):
+        return self.code

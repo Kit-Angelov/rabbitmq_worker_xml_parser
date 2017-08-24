@@ -2,13 +2,13 @@
 Методы работы с основной БД
 """
 import psycopg2
-from worker_parser_xml import config
+from xml_parse_project.worker_parser_xml import config
 
 
 class PgDb:
     conn = psycopg2.connect(**config.pg_params)
 
-    def get_document_type_id(self, type_document, version):
+    def get_document_type_id(self, code):
         """
         Получение id типа документа
         :param type_document:  тип документа
@@ -17,8 +17,7 @@ class PgDb:
         """
         with self.conn:
             cur = self.conn.cursor()
-            cur.execute("SELECT id FROM rrd_document_dic_type WHERE title=%s AND version=%s",
-                        (type_document, version))
+            cur.execute("SELECT id FROM rrd_document_dic_type WHERE code=%s ", (code,))
             type_id = cur.fetchone()
             self.conn.commit()
         return type_id

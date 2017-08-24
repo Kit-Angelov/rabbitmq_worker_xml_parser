@@ -12,8 +12,8 @@ def mk_temp_dir(path_zip, base_path):
     path_dir = os.path.join(base_path, (str(relative_path_zip).replace(".zip", "")))
     try:
         os.mkdir(path_dir)
-    except:
-        print('Директория уже существует')
+    except Exception as e:
+        print(e)
     finally:
         return path_dir
 
@@ -22,8 +22,8 @@ def mk_temp_dir(path_zip, base_path):
 def rm_temp_dir(path_dir):
     try:
         shutil.rmtree(path_dir)
-    except:
-        print('Директории не существует')
+    except Exception as e:
+        print(e)
 
 
 # распаковка файла зип
