@@ -2,12 +2,12 @@
 Методы работы с КПП БД
 """
 import sqlite3
-from xml_parse_project.worker_parser_xml import config
+from config import sqlite_params
 
 
 class SqliteDB:
 
-    con = sqlite3.connect(config.sqlite_params)
+    con = sqlite3.connect(sqlite_params)
 
     def get_owner(self, path_zip):
         """
@@ -17,7 +17,7 @@ class SqliteDB:
         """
         with self.con:
             cur = self.con.cursor()
-            cur.execute('SELECT user_id FROM rabbit_test_rabbit WHERE file = "%s"' % (path_zip,))
+            cur.execute('SELECT user_id FROM rabbit_test_rabbit WHERE file LIKE "%{0}%"'.format(path_zip))
             data = cur.fetchone()[0]
             return data
 
@@ -29,7 +29,7 @@ class SqliteDB:
         """
         with self.con:
             cur = self.con.cursor()
-            cur.execute('SELECT guid FROM rabbit_test_rabbit WHERE file = "%s"' % (path_zip,))
+            cur.execute('SELECT guid FROM rabbit_test_rabbit WHERE file LIKE "%{0}%"'.format(path_zip))
             data = cur.fetchone()[0]
             print('guid: ', data)
             return data
@@ -42,7 +42,7 @@ class SqliteDB:
         """
         with self.con:
             cur = self.con.cursor()
-            cur.execute('SELECT date_upload FROM rabbit_test_rabbit WHERE file = "%s"' % (path_zip,))
+            cur.execute('SELECT date_upload FROM rabbit_test_rabbit WHERE file LIKE "%{0}%"'.format(path_zip))
             data = cur.fetchone()[0]
             print('data_upload:', data)
             return data

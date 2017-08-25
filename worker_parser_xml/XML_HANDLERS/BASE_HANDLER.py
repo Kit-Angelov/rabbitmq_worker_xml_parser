@@ -2,6 +2,7 @@ from xml_parse_project.worker_parser_xml.db_utils.db_sqlite_utils import SqliteD
 from xml_parse_project.worker_parser_xml.db_utils.db_pg_utils import PgDb
 from uuid import uuid4
 from datetime import date
+import os
 
 
 class Document:
@@ -51,14 +52,14 @@ class Handler:
 
     def __get_guid(self):
         try:
-            self.document.guid = self.__sqlite_con.get_guid(self.xml)
+            self.document.guid = self.__sqlite_con.get_guid(os.path.basename(os.path.split(self.xml)[0]))
         except Exception as e:
             print(e)
             self.document.guid = uuid4()
 
     def __get_date_upload(self):
         try:
-            self.document.date_upload = self.__sqlite_con.get_date_upload(self.xml)
+            self.document.date_upload = self.__sqlite_con.get_date_upload(os.path.basename(os.path.split(self.xml)[0]))
         except Exception as e:
             print(e)
             self.document.date_upload = date.today()

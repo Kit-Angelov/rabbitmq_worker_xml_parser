@@ -1,9 +1,8 @@
 """
  обработка xml
 """
-from .type_and_version_checker import TypeVersionChecker
-import os
-from . import config
+from type_and_code_checker import TypeCodeChecker
+import config
 from lxml import etree
 
 
@@ -17,9 +16,9 @@ class MinerData:
         self.__data = None
 
     def __get_type_and_version(self):
-        type_version_checker = TypeVersionChecker(self.__etree)
-        self.__type_xml = type_version_checker.get_type(self.__xml)
-        self.__version_xml = type_version_checker.get_code(self.__xml, self.__type_xml)
+        type_code_checker = TypeCodeChecker(self.__etree, self.__xml)
+        self.__type_xml = type_code_checker.get_type()
+        self.__version_xml = type_code_checker.get_code()
 
     def get_data(self):
         self.__get_type_and_version()

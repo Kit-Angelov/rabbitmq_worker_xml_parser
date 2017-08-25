@@ -1,12 +1,12 @@
 """
 Конфигурации для парсера
 """
-from .XML_HANDLERS.xml_handlers import HandlerKVZU7
-from .type_and_version_checker import CodeCheckerKVZU, CodeChecker
+from xml_parse_project.worker_parser_xml.XML_HANDLERS.xml_handlers import HandlerKVZU7
+from type_and_code_checker import CodeCheckerKVZU, CodeChecker
 
 # списко типов
 type_list = {'KPT': '...',
-             'KVZU': CodeCheckerKVZU}
+             'KVZU': CodeChecker}
 
 # словарь тип, версия : функция обработки
 handlers_dict = {

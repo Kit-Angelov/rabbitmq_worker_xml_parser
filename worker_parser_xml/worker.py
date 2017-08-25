@@ -1,6 +1,6 @@
-from .mine_load import Loader, MinerXML
+from mine_load import Loader, MinerXML
 import pika
-from . import config_queue
+import config_queue
 import random
 import os
 import shutil
@@ -27,7 +27,7 @@ class Worker:
         # Обработка данных
         miner = MinerXML(self.worker_dir, body)
         data = miner.get_data()
-        loader = Loader(data)
+        loader = Loader(data, body)
         loader.load()
         print('Done')
 

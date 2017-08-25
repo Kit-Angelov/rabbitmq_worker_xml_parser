@@ -21,7 +21,7 @@ def index(request):
                                   user=request.user,
                                   guid=uuid.uuid4())
                 instance.save()
-                body = str(instance.file) + '|' + os.path.abspath(str(instance.file))
+                body = os.path.abspath(str(instance.file))
                 send(body)
                 print(body)
                 return HttpResponseRedirect('success')
