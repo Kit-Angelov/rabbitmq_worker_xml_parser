@@ -1,6 +1,6 @@
 from lxml.etree import QName
 from .BASE_HANDLER import Handler, Feature
-from xml_parse_project.worker_parser_xml.config import type_feature
+from xml_parse_project.worker_parser_xml.XML_HANDLERS.config_handlers import type_feature
 
 
 class HandlerKVZU7(Handler):

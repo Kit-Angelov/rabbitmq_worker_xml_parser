@@ -2,7 +2,7 @@
 Методы работы с КПП БД
 """
 import sqlite3
-from config import sqlite_params
+from xml_parse_project.worker_parser_xml.db_utils.config_db import sqlite_params
 
 
 class SqliteDB:

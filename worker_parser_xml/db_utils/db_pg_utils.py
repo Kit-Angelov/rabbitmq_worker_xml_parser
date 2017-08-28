@@ -2,11 +2,11 @@
 Методы работы с основной БД
 """
 import psycopg2
-from xml_parse_project.worker_parser_xml import config
+from xml_parse_project.worker_parser_xml.db_utils.config_db import pg_params
 
 
 class PgDb:
-    conn = psycopg2.connect(**config.pg_params)
+    conn = psycopg2.connect(**pg_params)
 
     def get_document_type_id(self, code):
         """

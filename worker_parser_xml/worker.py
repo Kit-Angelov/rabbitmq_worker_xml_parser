@@ -16,7 +16,7 @@ class Worker:
         self.channel.queue_declare(config_queue.queue, durable=True)
         self.channel.basic_qos(prefetch_count=1)
         self.worker_id = random.randint(1, 1000)
-        self.worker_dir = os.path.join(self.base_dir, self.worker_id)  # базовая диретория воркера
+        self.worker_dir = os.path.join(self.base_dir, str(self.worker_id))  # базовая диретория воркера
         self.properties = None
 
     def __handler(self, ch, method, properties, body):
@@ -34,10 +34,13 @@ class Worker:
         ch.basic_ack(delivery_tag=method.delivery_tag)
 
     def start(self):
+        BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+        if not os.path.exists(self.base_dir):
+            os.mkdir(self.base_dir)
         os.mkdir(self.worker_dir)
         print('Create dir {}'.format(self.worker_dir))
         self.channel.basic_consume(self.__handler, queue=self.queue)
-        print('start consuming.......')
+        print('start consuming.......{0}'.format(str(self.queue)))
         self.channel.start_consuming()
 
     def __del__(self):
