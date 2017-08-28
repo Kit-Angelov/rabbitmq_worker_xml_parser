@@ -18,15 +18,18 @@ class MinerData:
     def __get_type_and_version(self):
         type_code_checker = TypeCodeChecker(self.__etree, self.__xml)
         self.__type_xml = type_code_checker.get_type()
-        self.__version_xml = type_code_checker.get_code()
+        self.__code_xml = type_code_checker.get_code()
 
     def get_data(self):
         self.__get_type_and_version()
         if self.__type_xml in config.handlers_dict.keys():
             dict_codes = config.handlers_dict[self.__type_xml]
             if self.__code_xml in dict_codes:
-                get_data = dict_codes[self.__code_xml]
-                self.__data = get_data(self.__etree, self.__xml, self.__code_xml)
+                getter_data = dict_codes[self.__code_xml]
+                print('GETTER', getter_data)
+                self.__data = getter_data(self.__etree, self.__xml, self.__code_xml)
+                self.__data.get_data()
+                print('DATATATA', self.__data.document.registration_number)
         return self.__data
 
 

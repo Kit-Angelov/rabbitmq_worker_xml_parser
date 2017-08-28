@@ -48,7 +48,9 @@ class Handler:
         self.__context = self.__etree.iterparse(self.xml, events=("end",))
         self.__sqlite_con = SqliteDB()
         self.__pg_db_connect = PgDb()
-        self.__get_data()
+        self.__get_guid()
+        self.__get_date_upload()
+        self.__get_document_type_id()
 
     def __get_guid(self):
         try:
@@ -69,7 +71,7 @@ class Handler:
             self.document.type_id = self.__pg_db_connect.get_document_type_id(self.__code)
         except Exception as e:
             print(e)
-            self.__code = uuid4()
+            self.document.type_id = uuid4()
 
     def __get_document(self):
         pass
@@ -80,14 +82,8 @@ class Handler:
     def __get_location(self):
         pass
 
-    def __get_data(self):
-        self.__get_document_type_id()
-        self.__get_guid()
-        self.__get_date_upload()
-        self.__get_document()
-        self.__get_feature_list()
-        self.__get_location()
-        return self
+    def get_data(self):
+        pass
 
     def __del__(self):
         self.__sqlite_con.close()

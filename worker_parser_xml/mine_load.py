@@ -15,14 +15,15 @@ class Loader:
         self.__path_to_zip = path_to_zip
 
     def load(self):
+        print(self.__data, self.__path_to_zip)
         storage_id = self.__loader.rec_to_storage(self.__path_to_zip)
-
-        document_id = self.__loader.rec_to_document(self.__data.Document.date_upload,
-                                                    self.__data.Document.type_id,
-                                                    self.__data.Document.guid,
+        print('DATA', self.__data.document.registration_number)
+        document_id = self.__loader.rec_to_document(self.__data.document.date_upload,
+                                                    self.__data.document.type_id,
+                                                    self.__data.document.guid,
                                                     storage_id,
-                                                    self.__data.Document.registration_number,
-                                                    self.__data.Document.date_formation,)
+                                                    self.__data.document.registration_number,
+                                                    self.__data.document.date_formation,)
         for feature in self.__data.feature_data_list:
             feature_id = self.__loader.rec_to_feature(feature.type_id,
                                                       document_id,

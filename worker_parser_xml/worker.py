@@ -30,7 +30,6 @@ class Worker:
         loader = Loader(data, body)
         loader.load()
         print('Done')
-
         ch.basic_ack(delivery_tag=method.delivery_tag)
 
     def start(self):
@@ -44,11 +43,12 @@ class Worker:
         self.channel.start_consuming()
 
     def __del__(self):
-        try:
-            shutil.rmtree(self.worker_dir)
-            print('Delete dir {}'.format(self.worker_dir))
-        except Exception as e:
-            print(e)
+        pass
+        #try:
+         #   shutil.rmtree(self.worker_dir)
+         #   print('Delete dir {}'.format(self.worker_dir))
+       # except Exception as e:
+        #    print(e)
 
 
 
