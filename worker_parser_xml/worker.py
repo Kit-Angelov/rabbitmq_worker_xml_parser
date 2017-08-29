@@ -4,7 +4,6 @@ import config_queue
 import random
 import os
 import shutil
-from db_utils.db_pg_utils import PgDb
 
 
 class Worker:

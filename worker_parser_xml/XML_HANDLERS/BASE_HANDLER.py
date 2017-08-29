@@ -68,9 +68,9 @@ class Handler:
             self.document.date_upload = date.today()
 
     def __get_document_type_id(self):
-        self.__pg_db_connect = PgDb()
+        self.pg_db_connect = PgDb()
         try:
-            self.document.type_id = self.__pg_db_connect.get_document_type_id(self.__code)
+            self.document.type_id = self.pg_db_connect.get_document_type_id(self.__code)
         except Exception as e:
             print(e)
             self.document.type_id = str(uuid4())

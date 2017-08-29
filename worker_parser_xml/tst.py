@@ -12,7 +12,7 @@ for event, elem in context:
             print(QName(child.tag).localname)
             if QName(child.tag).localname == 'Name':
                 print(child.text)
-"""
+
 
 def get_location(elem):
     for child in elem.getchildren():
@@ -27,5 +27,13 @@ for event, elem in context:
                         get_location(location_child)
 
 
+"""
 
+class A:
+
+    def get(self, first, second):
+        print(first, second)
+
+
+a = A()
 
