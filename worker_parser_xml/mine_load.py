@@ -10,25 +10,30 @@ import os
 class Loader:
 
     def __init__(self, data, path_to_zip):
-        self.__loader = PgDb()
+        self.__loader = None
         self.__data = data
         self.__path_to_zip = path_to_zip
 
     def load(self):
-        print(self.__data, self.__path_to_zip)
+        self.__loader = PgDb()
         storage_id = self.__loader.rec_to_storage(self.__path_to_zip)
-        print('DATA', self.__data.document.registration_number)
         document_id = self.__loader.rec_to_document(self.__data.document.date_upload,
                                                     self.__data.document.type_id,
                                                     self.__data.document.guid,
                                                     storage_id,
                                                     self.__data.document.registration_number,
                                                     self.__data.document.date_formation,)
+
         for feature in self.__data.feature_data_list:
-            feature_id = self.__loader.rec_to_feature(feature.type_id,
-                                                      document_id,
-                                                      feature.registration_number,
-                                                      feature.registration_date)
+            location_id = self.__loader.rec_to_location(feature.location.okato,
+                                                        feature.location.kladr,
+                                                        feature.location.note,
+                                                        feature.location.region)
+            self.__loader.rec_to_feature(feature.type_id,
+                                         document_id,
+                                         feature.registration_number,
+                                         feature.registration_date,
+                                         location_id)
 
 
 class MinerXML:

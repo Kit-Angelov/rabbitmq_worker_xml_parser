@@ -4,6 +4,7 @@ import config_queue
 import random
 import os
 import shutil
+from db_utils.db_pg_utils import PgDb
 
 
 class Worker:
@@ -44,11 +45,11 @@ class Worker:
 
     def __del__(self):
         pass
-        #try:
-         #   shutil.rmtree(self.worker_dir)
-         #   print('Delete dir {}'.format(self.worker_dir))
-       # except Exception as e:
-        #    print(e)
+        try:
+            shutil.rmtree(self.worker_dir)
+            print('Delete dir {}'.format(self.worker_dir))
+        except Exception as e:
+            print(e)
 
 
 

@@ -21,7 +21,7 @@ class Feature:
         self.registration_number = None
         self.registration_date = None
         self.geometry = None
-        self.location = None
+        self.location = Location()
         self.childs = []
         self.type_id = None
 
@@ -42,24 +42,25 @@ class Handler:
         self.__code = code_xml
         self.document = Document()
         self.feature_data_list = []
-        self.Location = Location()
+        self.location = Location()
         self.__etree = etree
         self.xml = xml
         self.__context = self.__etree.iterparse(self.xml, events=("end",))
-        self.__sqlite_con = SqliteDB()
-        self.__pg_db_connect = PgDb()
         self.__get_guid()
         self.__get_date_upload()
         self.__get_document_type_id()
+        self.__code_feature = None
 
     def __get_guid(self):
+        self.__sqlite_con = SqliteDB()
         try:
             self.document.guid = self.__sqlite_con.get_guid(os.path.basename(os.path.split(self.xml)[0]))
         except Exception as e:
             print(e)
-            self.document.guid = uuid4()
+            self.document.guid = str(uuid4())
 
     def __get_date_upload(self):
+        self.__sqlite_con = SqliteDB()
         try:
             self.document.date_upload = self.__sqlite_con.get_date_upload(os.path.basename(os.path.split(self.xml)[0]))
         except Exception as e:
@@ -67,11 +68,12 @@ class Handler:
             self.document.date_upload = date.today()
 
     def __get_document_type_id(self):
+        self.__pg_db_connect = PgDb()
         try:
             self.document.type_id = self.__pg_db_connect.get_document_type_id(self.__code)
         except Exception as e:
             print(e)
-            self.document.type_id = uuid4()
+            self.document.type_id = str(uuid4())
 
     def __get_document(self):
         pass
@@ -79,15 +81,13 @@ class Handler:
     def __get_feature_list(self):
         pass
 
-    def __get_location(self):
+    def __get_location(self, feature):
         pass
 
     def get_data(self):
         pass
 
     def __del__(self):
-        self.__sqlite_con.close()
-        self.__pg_db_connect.close()
         del self.__context
 
 

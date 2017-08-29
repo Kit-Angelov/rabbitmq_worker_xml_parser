@@ -22,7 +22,7 @@ class PgDb:
             self.conn.commit()
         return type_id
 
-    def get_feature_type_id(self, type_feature):
+    def get_feature_type_id(self, code_feature):
         """
         Получение id типа сущности
         :param type_feature: тип сущности
@@ -30,7 +30,7 @@ class PgDb:
         """
         with self.conn:
             cur = self.conn.cursor()
-            cur.execute("SELECT id FROM rrd_feature_dic_type WHERE title=%s ",  (type_feature,))
+            cur.execute("SELECT id FROM rrd_feature_dic_type WHERE code=%s ",  (code_feature,))
             type_id = cur.fetchone()
             print('type_id_feature:', type_id)
             self.conn.commit()
@@ -84,7 +84,29 @@ class PgDb:
             self.conn.commit()
         return document_id
 
-    def rec_to_feature(self, type_id, document_id, registration_number, registration_date):
+    def rec_to_location(self, okato, kladr, note, region, oktmo=None):
+        """
+        Запись в location
+        """
+        with self.conn:
+            cur = self.conn.cursor()
+            cur.execute("INSERT INTO rrd_location ("
+                        "okato, "
+                        "kladr, "
+                        "note, "
+                        "region,"
+                        "oktmo) "
+                        "VALUES (%s, %s, %s, %s, %s) RETURNING id",
+                        (okato,
+                         kladr,
+                         note,
+                         region,
+                         oktmo))
+            location_id = cur.fetchone()[0]
+            self.conn.commit()
+        return location_id
+
+    def rec_to_feature(self, type_id, document_id, registration_number, registration_date, location_id):
         """
         Запись в feature
         :param type_id: /данные
@@ -99,12 +121,14 @@ class PgDb:
                         "registration_number, "
                         "registration_date, "
                         "document_id, "
-                        "type_id) "
-                        "VALUES (%s, %s, %s, %s) RETURNING id",
+                        "type_id, "
+                        "location_id) "
+                        "VALUES (%s, %s, %s, %s, %s) RETURNING id",
                         (registration_number,
-                        registration_date,
-                        document_id,
-                        type_id))
+                         registration_date,
+                         document_id,
+                         type_id,
+                         location_id))
             feature_id = cur.fetchone()[0]
             print(feature_id)
             self.conn.commit()
