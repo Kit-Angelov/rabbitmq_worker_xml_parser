@@ -24,6 +24,7 @@ class Feature:
         self.location = Location()
         self.childs = []
         self.type_id = None
+        self.code = None
 
 
 class Location:
@@ -43,13 +44,12 @@ class Handler:
         self.document = Document()
         self.feature_data_list = []
         self.location = Location()
-        self.__etree = etree
+        self.etree = etree
         self.xml = xml
-        self.__context = self.__etree.iterparse(self.xml, events=("end",))
+        self.context = None
         self.__get_guid()
         self.__get_date_upload()
         self.__get_document_type_id()
-        self.__code_feature = None
 
     def __get_guid(self):
         self.__sqlite_con = SqliteDB()
@@ -88,6 +88,6 @@ class Handler:
         pass
 
     def __del__(self):
-        del self.__context
+        del self.context
 
 
