@@ -50,25 +50,24 @@ class Handler:
         self.__get_guid()
         self.__get_date_upload()
         self.__get_document_type_id()
+        self.pg_db_connect = PgDb()
+        self.sqlite_con = SqliteDB()
 
     def __get_guid(self):
-        self.__sqlite_con = SqliteDB()
         try:
-            self.document.guid = self.__sqlite_con.get_guid(os.path.basename(os.path.split(self.xml)[0]))
+            self.document.guid = self.sqlite_con.get_guid(os.path.basename(os.path.split(self.xml)[0]))
         except Exception as e:
             print(e)
             self.document.guid = str(uuid4())
 
     def __get_date_upload(self):
-        self.__sqlite_con = SqliteDB()
         try:
-            self.document.date_upload = self.__sqlite_con.get_date_upload(os.path.basename(os.path.split(self.xml)[0]))
+            self.document.date_upload = self.sqlite_con.get_date_upload(os.path.basename(os.path.split(self.xml)[0]))
         except Exception as e:
             print(e)
             self.document.date_upload = date.today()
 
     def __get_document_type_id(self):
-        self.pg_db_connect = PgDb()
         try:
             self.document.type_id = self.pg_db_connect.get_document_type_id(self.__code)
         except Exception as e:

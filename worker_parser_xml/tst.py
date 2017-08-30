@@ -4,7 +4,11 @@ import time
 from lxml import etree
 from lxml.etree import QName
 #, tag="{urn://x-artefacts-rosreestr-ru/outgoing/kvzu/7.0.1}Parcels"
-context = etree.iterparse('tst.xml', events=("end",))
+context = etree.iterparse('examples\kpt10.xml', events=("end",))
+for event, elem in context:
+    if QName(elem.tag).localname == 'Parcel':
+        pass
+        #print(len(elem.getchildren()))
 """
 for event, elem in context:
     if QName(elem.tag).localname == 'Parcel':
@@ -27,13 +31,9 @@ for event, elem in context:
                         get_location(location_child)
 
 
+
 """
 
-class A:
-
-    def get(self, first, second):
-        print(first, second)
-
-
-a = A()
+a = {'3': (lambda: 3+4)()}
+print(a['3'])
 
