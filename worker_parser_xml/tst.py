@@ -36,4 +36,3 @@ for event, elem in context:
 
 a = {'3': (lambda: 3+4)()}
 print(a['3'])
-
