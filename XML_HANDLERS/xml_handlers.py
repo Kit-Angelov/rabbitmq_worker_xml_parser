@@ -16,11 +16,11 @@ class HandlerZU(BASE_HANDLER.Handler):
             elem_tag = QName(elem.tag).localname
             if elem_tag in feature_name_list:
                 for child in elem.getchildren():
-                    child_tag = QName(elem.tag).localname
+                    child_tag = QName(child.tag).localname
                     if child_tag in feature_names:
-                        print('Add Feature:')
+                        print('----Add Feature:----')
                         feature = GetterFeature().get_feature(child, self.pg_db_connect)
-                        print('Feature added')
+                        print('----Feature added {0}----\n'.format(feature.code))
                         self.feature_data_list.append(feature)
 
     def get_data(self):
@@ -38,9 +38,9 @@ class HandlerKVZU7(HandlerZU):
                 for child in elem.getchildren():
                     child_tag = QName(child.tag).localname
                     if child_tag == 'Parcel':
-                        print('Add Feature:')
+                        print('----Add Feature:----')
                         feature = GetterFeature().get_feature(child, self.pg_db_connect)
-                        print('Feature added')
+                        print('----Feature added {0}----\n'.format(feature.code))
                         self.feature_data_list.append(feature)
 
 
@@ -51,9 +51,9 @@ class HandlerKPZU6(HandlerZU):
         for event, elem in self.context:
             elem_tag = QName(elem.tag).localname
             if elem_tag == 'Parcel':
-                print('Add Feature:')
+                print('----Add Feature:----')
                 feature = GetterFeature().get_feature(elem, self.pg_db_connect)
-                print('Feature added')
+                print('----Feature added {0}----\n'.format(feature.code))
                 self.feature_data_list.append(feature)
 
 
@@ -75,12 +75,12 @@ class HandlerKPT10(HandlerZU):
                                 for grandgrandchild in grandchild.getchildren():
                                     grandgrandchild_tag = QName(grandgrandchild.tag).localname
                                     if grandgrandchild_tag in feature_names:
-                                        print('Add Feature:')
+                                        print('----Add Feature:----')
                                         feature = GetterFeature().get_feature(grandgrandchild, self.pg_db_connect)
-                                        print('Feature added')
+                                        print('----Feature added {0}----\n'.format(feature.code))
                                         self.feature_data_list.append(feature)
                             elif grandchild_tag in feature_names:
-                                print('Add Feature:')
+                                print('----Add Feature:----')
                                 feature = GetterFeature().get_feature(grandchild, self.pg_db_connect)
-                                print('Feature added')
+                                print('----Feature added {0}----\n'.format(feature.code))
                                 self.feature_data_list.append(feature)

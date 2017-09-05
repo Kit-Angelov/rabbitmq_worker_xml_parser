@@ -15,8 +15,8 @@ class CodeChecker:
     def get_code(self):
         self.__context = etree.iterparse(self.__xml, events=("start-ns",))
         for event, elem in self.__context:
-            self.__code = elem[1]
-            break
+            if elem[0] == '':
+                self.__code = elem[1]
         return self.__code
 
     def __del__(self):

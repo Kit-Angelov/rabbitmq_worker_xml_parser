@@ -36,5 +36,4 @@ for event, elem in context:
 """
 
 
-def a():
-    return '3'
+print(os.path.exists('..\worker_parser_xml\examples\kvzu07.xml'))

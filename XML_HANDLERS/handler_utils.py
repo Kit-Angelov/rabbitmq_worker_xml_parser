@@ -18,26 +18,22 @@ def get_document(obj):
 
 
 def get_location(feature, elem):
+    if len(elem.text) > 0:
+        feature.location.note = elem.text
+        print('Location note: {}'.format(feature.location.note))
     for child in elem.getchildren():
         if QName(child.tag).localname == 'OKATO':
             feature.location.okato = child.text
-            print('Location okato: {}'.format(feature.location.oktmo))
+            print('Location okato: {}'.format(feature.location.okato))
         if QName(child.tag).localname == 'KLADR':
             feature.location.kladr = child.text
-            print('Location kladr: {}'.format(feature.location.oktmo))
+            print('Location kladr: {}'.format(feature.location.kladr))
         if QName(child.tag).localname == 'Note':
             feature.location.note = child.text
-            print('Location note: {}'.format(feature.location.oktmo))
+            print('Location note: {}'.format(feature.location.note))
         if QName(child.tag).localname == 'Region':
             feature.location.region = child.text
-            print('Location region: {}'.format(feature.location.oktmo))
-        else:
-            try:
-                feature.location.note == elem.text
-                print('Location note: {}'.format(feature.location.oktmo))
-            except Exception as e:
-                print('Error: ', e)
-                pass
+            print('Location region: {}'.format(feature.location.region))
 
 
 class GetterFeature:
@@ -58,11 +54,14 @@ class GetterFeature:
         try:
             func = func_dict[str(tag)]
             self.feature = func(elem)
-            self.feature.type_id = pg_db_connection.get_feature_type_id(self.feature.code)
-            print('Feature type id: {}'.format(self.feature.type_id))
-            return self.feature
         except Exception as e:
             print('Error: ', e)
+        try:
+            self.feature.type_id = pg_db_connection.get_feature_type_id(self.feature.code)
+            print('Feature type id: {}'.format(self.feature.type_id))
+        except Exception as e:
+            print('Error: ', e)
+        return self.feature
 
     def __get_feature_parcel(self, elem):
         self.feature.code = 'Parcel'
@@ -126,13 +125,13 @@ class GetterFeature:
 
     def __get_feature_bound(self, elem):
         code_dict = {
-            'SubjectsBoundary': (lambda: 'Bound_{0}'.format(QName(child.tag).localname))(),
-            'MunicipalBoundary': (lambda: 'Bound_{0}'.format(QName(child.tag).localname))(),
-            'InhabitedLocalityBoundary': (lambda: 'Bound_{0}'.format(QName(child.tag).localname))(),
+            'SubjectsBoundary': (lambda element: 'Bound_{0}'.format(QName(element.tag).localname)),
+            'MunicipalBoundary': (lambda element: 'Bound_{0}'.format(QName(element.tag).localname)),
+            'InhabitedLocalityBoundary': (lambda element: 'Bound_{0}'.format(QName(element.tag).localname)),
         }
         for child in elem.getchildren():
             if QName(child.tag).localname in code_dict.keys():
-                self.feature.code = (code_dict[QName(child.tag).localname])
+                self.feature.code = (code_dict[QName(child.tag).localname])(child)
                 print('Feature code: {}'.format(self.feature.code))
             if QName(child.tag).localname == 'AccountNumber':
                 self.feature.registration_number = child.text
@@ -143,12 +142,12 @@ class GetterFeature:
 
     def __get_feature_zone(self, elem):
         code_dict = {
-            'TerritorialZone': (lambda: 'Zone_{0}'.format(QName(child.tag).localname))(),
-            'SpecialZone': (lambda: 'Zone_{0}'.format(QName(child.tag).localname))(),
+            'TerritorialZone': (lambda element: 'Zone_{0}'.format(QName(element.tag).localname)),
+            'SpecialZone': (lambda element: 'Zone_{0}'.format(QName(element.tag).localname)),
         }
         for child in elem.getchildren():
             if QName(child.tag).localname in code_dict.keys():
-                self.feature.code = (code_dict[QName(child.tag).localname])
+                self.feature.code = (code_dict[QName(child.tag).localname])(child)
                 print('Feature code: {}'.format(self.feature.code))
             if QName(child.tag).localname == 'AccountNumber':
                 self.feature.registration_number = child.text

@@ -44,7 +44,6 @@ class Handler:
         self.__code = code_xml
         self.document = Document()
         self.feature_data_list = []
-        self.location = Location()
         self.etree = etree
         self.xml = xml
         self.context = None
@@ -57,6 +56,7 @@ class Handler:
     def get_guid(self):
         try:
             self.document.guid = self.pg_db_client_connect.get_guid(os.path.basename(os.path.split(self.work_dir)[-1]))
+            print('work-dir', self.work_dir)
             print('Document guid: {}'.format(self.document.guid))
         except Exception as e:
             print('Error: ', e)
